@@ -1,0 +1,48 @@
+
+.table-cont {
+    width: 100%;
+    // background-color: pink;
+
+    table {
+        min-width: 60%;
+        border-collapse: collapse;
+        border: 1px solid black;
+
+        thead {
+            // background: green;
+
+            .header-row {
+                text-align: left;
+                border-bottom: 1px solid black;
+
+                th{
+                    text-align: left;
+                    padding: 0.5rem 1rem 0.5rem 0;
+                }
+            }
+        }
+
+        tbody {
+            // background-color: yellow;
+            .tbody-row {
+                cursor: pointer;
+                &.active {
+                    background-color: pink;
+                }
+                .table-data-check {
+                    border-bottom: 1px solid black;
+                    padding: 0.5rem 0.3rem 0.5rem 0;
+                }
+                .table-data {
+                    border-bottom: 1px solid black;
+                    padding: 0.5rem 1rem 0.5rem 0;
+
+                    &.numeric-field {
+                        text-align: right;
+                        padding-right: 1.5rem;
+                    }
+                }
+            }
+        }
+    }
+}

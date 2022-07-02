@@ -1,6 +1,10 @@
+/* eslint-disable testing-library/no-render-in-setup */
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event'
 import { Table } from './Table';
+import { server } from 'mocks/axios.mock';
+
 
 
 const columns = [
@@ -18,15 +22,28 @@ const rows = [
     { id: 5, title: 'John', url: 'imageurl-5.com', thumbnail: "thumbnail-5.com" }
  ];
 
-describe("table component", () => {
-    // const setup = () => 
+ 
 
-    beforeEach(() => {
-        render(<Table columns={columns} rows={rows} onRowClick={() => {}} />)
-    })
+
+
+describe("table component renders", () => {
+    beforeAll(() => server.listen({
+        onUnhandledRequest: "error"
+    }))
+    afterEach(() => server.resetHandlers())
+    afterAll(() => server.close())
+
+
+    const getTable = async () => {
+        let table;
+        table = render(<Table columns={columns} rows={rows} onRowClick={() => {}} />)
+        return table
+    }
+
+    beforeEach(() => getTable())
 
     it("Should render without crashing", () => {
-        const table = screen.getByTestId("table")
+        const table = screen.getByRole("table")
         expect(table).toBeInTheDocument()
     })
 
@@ -46,7 +63,23 @@ describe("table component", () => {
     })
 
     test("that number of unique rows is equal to number of rows array length", () => {
-        const allRows = screen.getAllByTestId("table-row")
+        const allRows = screen.getAllByTestId("body-row")
         expect(allRows).toHaveLength(rows.length)
     })
 })
+
+describe("table events", () => {
+    test("that it performs an event on row click", async () => {
+        const onClick = jest.fn()
+        render(<Table columns={columns} rows={rows} onRowClick={onClick} />)
+        const tableRows = screen.getAllByTestId("row-data")
+
+        // fireEvent.click(tableRows[0])
+        // expect(onClick.mock.calls.length).toEqual(1);
+
+       userEvent.click(tableRows[0])
+       expect(onClick).toHaveBeenCalledTimes(1)
+    })
+})
+
+

@@ -1,36 +1,39 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { Checkbox } from 'components/checkbox/Checkbox'
-import { useSelectRow } from 'customHooks/useSelectRow'
+import { useSelectRow } from 'customHooks/useRowSelection/useSelectRow'
 
 export interface ITable<T, C> {
-  onRowClick: () => void
+  onRowClick: Function
   columns: Array<C>
   rows: any
+  loading?: boolean
+  rowSelector?: boolean;
+  setLastElement?: Dispatch<SetStateAction<T>>
 }
 
-const obj = {name: "wale"}
 
-export function Table<T, C>({columns, rows, onRowClick}: ITable<T, C>) {
+export function Table<T, C>({columns, rows, onRowClick, loading, rowSelector, setLastElement}: ITable<T, C>) {
+
   const {
-    selectedRowArray, 
+    selectedRowsArray, 
     selectSingleRow, 
     selectAllRows, 
     activateCheckbox
-  } = useSelectRow()
+   } = useSelectRow()
 
   return (
     <div className='table-cont'>
         <table data-testid="table"  >
             <thead data-testid="t-head">
-                <tr data-testid="header-row">
-                    <th >
+                <tr data-testid="header-row" className='header-row'>
+                   {rowSelector && <th >
                         <Checkbox
-                            value={selectedRowArray?.length === rows.length}
+                            value={rows.length && selectedRowsArray?.length === rows.length}
                             onChange={() => selectAllRows(rows)}
                             data-testid="column-checkbox"
                         />
-                    </th>
-                    {columns.map((col: any) => (
+                    </th>}
+                    {columns.map((col: any, i: number) => (
                       <th key={col.id} data-testid="th"
                             style={{width: col?.width}} 
                             className={`t-head`}
@@ -42,30 +45,40 @@ export function Table<T, C>({columns, rows, onRowClick}: ITable<T, C>) {
             </thead>
 
             <tbody data-testid="t-body" >
-                {rows?.map((row: any) =>
-                    <tr key={row.id} data-testid="table-row" className={`tbody-row`} 
-                       // onClick={() => selectRow(row)}
+                {rows?.length ?
+                rows?.map((row: any, i: number) => (
+                    <tr key={row.id} data-testid="body-row" 
+                        className={`tbody-row ${selectedRowsArray.includes(row) && "active"}`}
+                        // onClick={() => onRowClick(row)}
+                        //@ts-ignore
+                        ref={setLastElement}
                     >
-                        <td>
+                        {rowSelector && 
+                         <td className="table-data-check">
                             <Checkbox
                                 value={activateCheckbox(row)}
-                                onChange={() => selectSingleRow(row)}
+                                onChange={() => {
+                                    selectSingleRow(row)
+                                }}
                                 data-testid="row-checkbox"
                             />
-                        </td>
-                    {columns?.map((col: any) => 
-                            <td key={col.id} data-testid="td" 
-                                onClick={onRowClick}
-                                style={{width: col.width, textAlign: row[col.id] && !isNaN(row[col.id]) && "right" }} 
-                                className={`t-data ${col?.width}`}
+                        </td>}
+                    {columns?.map((col: any, i: number) => 
+                            <td key={col.id} data-testid="row-data" 
+                                onClick={() => onRowClick(row)}
+                                className={`table-data ${!isNaN(row[col.id]) && "numeric-field"}`} 
                             >
                                 {row[col.id]}
                             </td>
                     )}
                     </tr>
-                )}
+                ))
+                : loading ? (<tr><td>Loading...</td></tr>)
+                : (<tr><td>Empty</td></tr> )
+                }
             </tbody>
         </table>
+
     </div>
   )
 }

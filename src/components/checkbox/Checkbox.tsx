@@ -5,12 +5,17 @@ interface ICheckbox {
     onChange: () => void
 }
 
-export const Checkbox = ({ value, onChange }: ICheckbox) => {
+export const Checkbox = ({value, onChange}: ICheckbox) => {
     
     return (
-      <label>
-        <input type="checkbox" checked={value} onChange={onChange} />
-        {/* {label} */}
-      </label>
+      <input 
+        name="table-checkbox" 
+        type="checkbox" 
+        checked={value} 
+        onChange={onChange} 
+        data-testid="checkbox" 
+        className='checkbox'
+        style={{cursor: "pointer"}}
+      />
     );
 };
