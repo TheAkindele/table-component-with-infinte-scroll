@@ -2,7 +2,7 @@ import React from 'react'
 
 interface ICheckbox {
     value: boolean
-    onChange: () => void
+    onChange?: () => void
 }
 
 export const Checkbox = ({value, onChange}: ICheckbox) => {

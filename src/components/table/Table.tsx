@@ -50,7 +50,7 @@ export const Table = ({columns, rows, onRowClick, loading, rowSelector, setLastE
                 rows?.map((row: any, i: number) => (
                     <tr key={row.id} data-testid="body-row" 
                         className={`tbody-row ${selectedRowsArray.includes(row) && "active"}`}
-                        // onClick={() => onRowClick(row)}
+                        onClick={() => selectSingleRow(row)}
                         //@ts-ignore
                         ref={setLastElement}
                     >
@@ -58,15 +58,15 @@ export const Table = ({columns, rows, onRowClick, loading, rowSelector, setLastE
                          <td className="table-data-check">
                             <Checkbox
                                 value={activateCheckbox(row)}
-                                onChange={() => {
-                                    selectSingleRow(row)
-                                }}
+                                // onChange={() => {
+                                //     selectSingleRow(row)
+                                // }}
                                 data-testid="row-checkbox"
                             />
                         </td>}
                     {columns?.map((col: any, i: number) => 
                             <td key={col.id} data-testid="row-data" 
-                                onClick={() => onRowClick(row)}
+                                // onClick={() => onRowClick(row)}
                                 className={`table-data ${!isNaN(row[col.id]) && "numeric-field"}`} 
                             >
                                 {row[col.id]}
