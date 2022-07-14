@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react'
+import { Dispatch, SetStateAction } from 'react'
 import { Checkbox } from 'components/checkbox/Checkbox'
 import { useSelectRow } from 'customHooks/useRowSelection/useSelectRow'
 
