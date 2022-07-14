@@ -10,9 +10,9 @@ export const Checkbox = ({value, onChange}: ICheckbox) => {
     return (
       <input 
         name="table-checkbox" 
-        type="checkbox" 
+        type="checkbox"
         checked={value} 
-        onChange={onChange} 
+        onChange={onChange && onChange} 
         data-testid="checkbox" 
         className='checkbox'
         style={{cursor: "pointer"}}
