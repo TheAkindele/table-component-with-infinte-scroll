@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 
-interface Props {
-    rows?: any
-    rowData?: object
-    data?: any
-}
+// interface Props {
+//     rows?: any
+//     rowData?: object
+//     data?: any
+// }
 
 export function useSelectRow()  {
     const [selectedRowsArray, setSelectedRowsArray] = React.useState<any>([])

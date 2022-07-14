@@ -1,6 +1,5 @@
 import {useState, useEffect, useRef} from "react"
 
-interface IScroll {}
 
 export const useInfiniteScroll = () => {
     const [pageNumber, setPageNumber] = useState(1)
@@ -36,26 +35,3 @@ export const useInfiniteScroll = () => {
 
 
 
-
-// const getPhotos = async () => {
-    //     setLoading(true)
-    //     await axios.get(
-    //         `https://jsonplaceholder.typicode.com/photos?_page=${page}&_limit=30`
-    //     )
-    //     .then((res: any) => {
-    //         let all = new Set([...photos, ...res?.data]);
-    //         setPhotos([...all]);
-    //         console.log("useinfinteScroll data==", photos)
-    //         setLoading(false);
-    //     })
-    //     .catch(err => console.log("axios err==", err))
-    // }
-    
-
-    // useEffect(() => {
-    //     const callData = async () => {
-    //         await apiFunction()
-    //     }
-    //     callData()
-    //      // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [page])

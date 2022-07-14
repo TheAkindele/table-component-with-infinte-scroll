@@ -13,7 +13,7 @@ export interface ITable<T, C> {
 
 
 export const Table = ({columns, rows, onRowClick, loading, rowSelector, setLastElement}: any) => {
-    console.log("data sent==", rows)
+    // console.log("data sent==", rows)
 
   const {
     selectedRowsArray, 

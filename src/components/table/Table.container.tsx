@@ -17,14 +17,14 @@ export const TableContainer = React.memo((props: Props) => {
 
     const getPhotos =  useCallback(async () => {
         setLoading(true)
-        console.log("available data<><><>", photos)
+        // console.log("available data<><><>", photos)
         await axios.get(
             `https://jsonplaceholder.typicode.com/photos?_page=${pageNumber}&_limit=30`
         )
         .then((res: any) => {
             let all = new Set([...photos, ...res?.data]);
-            console.log("new data-----", res?.data)
-            console.log("set======", all)
+            // console.log("new data-----", res?.data)
+            // console.log("set======", all)
             setPhotos([...all]);
             // console.log("useinfinteScroll data==", photos)
             setLoading(false);
