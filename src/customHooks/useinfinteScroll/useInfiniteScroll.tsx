@@ -1,30 +1,43 @@
 import {useState, useEffect, useRef} from "react"
-import axios from "axios"
 
-interface IScroll {
-   //  apiFunction: () => Promise<void>
-    page: number
-    nextPage: Function
-}
+interface IScroll {}
 
-export const useInfiniteScroll = ({page, nextPage }: IScroll) => {
-    // const [photos, setPhotos] = useState<any>([])
-    // const [loading, setLoading] = useState(false)
-    // const [page, setPage] = useState(1)
+export const useInfiniteScroll = () => {
+    const [pageNumber, setPageNumber] = useState(1)
     const [lastElement, setLastElement] = useState(null);
 
-   //  console.log("page==", page)
 
     const observer = useRef(
 		new IntersectionObserver((entries) => {
 			const first = entries[0];
 			if (first.isIntersecting) {
-				nextPage();
+                setPageNumber((e: number) => e + 1)
 			}
 		})
 	);
 
-    // const getPhotos = async () => {
+    useEffect(() => {
+		const currentElement = lastElement;
+		const currentObserver = observer?.current;
+
+		if (currentElement) {
+			currentObserver.observe(currentElement);
+		}
+
+		return () => {
+			if (currentElement) {
+				currentObserver.unobserve(currentElement);
+			}
+		};
+	}, [lastElement]);
+
+    return {setLastElement, pageNumber}
+}
+
+
+
+
+// const getPhotos = async () => {
     //     setLoading(true)
     //     await axios.get(
     //         `https://jsonplaceholder.typicode.com/photos?_page=${page}&_limit=30`
@@ -46,23 +59,3 @@ export const useInfiniteScroll = ({page, nextPage }: IScroll) => {
     //     callData()
     //      // eslint-disable-next-line react-hooks/exhaustive-deps
     // }, [page])
-
-    useEffect(() => {
-		const currentElement = lastElement;
-		const currentObserver = observer?.current;
-
-		if (currentElement) {
-            console.log("currentElement--", currentElement)
-			currentObserver.observe(currentElement);
-		}
-
-		return () => {
-			if (currentElement) {
-				currentObserver.unobserve(currentElement);
-			}
-		};
-	}, [lastElement]);
-    // console.log("ref current==", observer.current)
-
-    return {setLastElement}
-}

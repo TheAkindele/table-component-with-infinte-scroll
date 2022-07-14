@@ -12,7 +12,8 @@ export interface ITable<T, C> {
 }
 
 
-export function Table<T, C>({columns, rows, onRowClick, loading, rowSelector, setLastElement}: ITable<T, C>) {
+export const Table = ({columns, rows, onRowClick, loading, rowSelector, setLastElement}: any) => {
+    console.log("data sent==", rows)
 
   const {
     selectedRowsArray, 

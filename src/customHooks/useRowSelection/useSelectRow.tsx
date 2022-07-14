@@ -42,7 +42,7 @@ export function useSelectRow()  {
         }
     }, [selectedRowsArray])
 
-    console.log("selectedRowsArray==", selectedRowsArray)
+    // console.log("selectedRowsArray==", selectedRowsArray)
     
   return {selectedRowsArray, selectSingleRow, selectAllRows, activateCheckbox}
 

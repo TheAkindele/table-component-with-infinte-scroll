@@ -1,32 +1,37 @@
 import { useInfiniteScroll } from 'customHooks/useinfinteScroll/useInfiniteScroll';
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useCallback} from 'react'
 import { Table } from './Table';
 import axios from "axios"
 
 type Props = {}
 
-export const TableContainer = (props: Props) => {
-    const [click, setclick] = React.useState<any>()
+export const TableContainer = React.memo((props: Props) => {
 
     const [photos, setPhotos] = useState<any>([])
     const [loading, setLoading] = useState(false)
-    const [page, setPage] = useState(1)
 
-    const nextPage = () => setPage(page + 1)
 
-    const getPhotos = async () => {
+    const {setLastElement, pageNumber} = useInfiniteScroll()
+
+    // console.log("table conatiner rendered<><>")
+
+    const getPhotos =  useCallback(async () => {
         setLoading(true)
+        console.log("available data<><><>", photos)
         await axios.get(
-            `https://jsonplaceholder.typicode.com/photos?_page=${page}&_limit=30`
+            `https://jsonplaceholder.typicode.com/photos?_page=${pageNumber}&_limit=30`
         )
         .then((res: any) => {
             let all = new Set([...photos, ...res?.data]);
+            console.log("new data-----", res?.data)
+            console.log("set======", all)
             setPhotos([...all]);
-            console.log("useinfinteScroll data==", photos)
+            // console.log("useinfinteScroll data==", photos)
             setLoading(false);
         })
         .catch(err => console.log("axios err==", err))
-    }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [pageNumber])
 
     useEffect(() => {
         const callData = async () => {
@@ -34,8 +39,7 @@ export const TableContainer = (props: Props) => {
         }
         callData()
          // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [page])
-
+    }, [pageNumber])
 
 
     const columns = [
@@ -45,8 +49,7 @@ export const TableContainer = (props: Props) => {
         {id: "thumbnailUrl", label: "Thumbnail" }
     ];
 
-    const {setLastElement} = useInfiniteScroll({page, nextPage})
-
+    
   return (
     <div>
         <Table
@@ -59,7 +62,7 @@ export const TableContainer = (props: Props) => {
         />
     </div>
   )
-}
+})
 
 const Alert = (row: any) => (
     <div>
