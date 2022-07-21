@@ -5,9 +5,9 @@ import axios from "axios"
 
 type Props = {}
 
-export const TableContainer = React.memo((props: Props) => {
+export const TableContainer = <T, > (props: Props) => {
 
-    const [photos, setPhotos] = useState<any>([])
+    const [photos, setPhotos] = useState<T[]>([])
     const [loading, setLoading] = useState(false)
 
 
@@ -15,16 +15,15 @@ export const TableContainer = React.memo((props: Props) => {
 
     // console.log("table conatiner rendered<><>")
 
-    const getPhotos =  useCallback(async () => {
+    const getPhotos =  useCallback(async (signal) => {
         setLoading(true)
         // console.log("available data<><><>", photos)
         await axios.get(
-            `https://jsonplaceholder.typicode.com/photos?_page=${pageNumber}&_limit=30`
+            `https://jsonplaceholder.typicode.com/photos?_page=${pageNumber}&_limit=30`,
+            { signal: signal }
         )
         .then((res: any) => {
             let all = new Set([...photos, ...res?.data]);
-            // console.log("new data-----", res?.data)
-            // console.log("set======", all)
             setPhotos([...all]);
             // console.log("useinfinteScroll data==", photos)
             setLoading(false);
@@ -33,12 +32,24 @@ export const TableContainer = React.memo((props: Props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageNumber])
 
+    // useEffect(() => {
+    //     const callData = async () => {
+    //         await getPhotos()
+    //     }
+    //     callData()
+    //      // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [pageNumber])
+
     useEffect(() => {
-        const callData = async () => {
-            await getPhotos()
-        }
-        callData()
-         // eslint-disable-next-line react-hooks/exhaustive-deps
+        let abortController: any
+        (async () => {
+            abortController = new AbortController();
+             let signal = abortController.signal;    
+            await getPhotos(signal)
+        })()
+        return () => abortController.abort();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pageNumber])
 
 
@@ -62,7 +73,7 @@ export const TableContainer = React.memo((props: Props) => {
         />
     </div>
   )
-})
+}
 
 const Alert = (row: any) => (
     <div>

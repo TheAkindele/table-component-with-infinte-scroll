@@ -2,18 +2,19 @@ import { Dispatch, SetStateAction } from 'react'
 import { Checkbox } from 'components/checkbox/Checkbox'
 import { useSelectRow } from 'customHooks/useRowSelection/useSelectRow'
 
-export interface ITable<T, C> {
-  onRowClick: Function
-  columns: Array<C>
-  rows: any
-  loading?: boolean
-  rowSelector?: boolean;
-  setLastElement?: Dispatch<SetStateAction<T>>
+export interface ITable<T, M> {
+    rows: Array<T>
+    columns: Array<M>
+    // columns: {id: string | number, label: string, width?: string}[]
+    onRowClick: Function
+    loading?: boolean
+    rowSelector?: boolean;
+    setLastElement?: Dispatch<SetStateAction<null>>
 }
 
 
-export const Table = ({columns, rows, onRowClick, loading, rowSelector, setLastElement}: any) => {
-    // console.log("data sent==", rows)
+export const Table = <T, M,> ({columns, rows, loading, rowSelector, setLastElement}: ITable<T, M>) => {
+    // console.log("data sent==", rows) <ITable>
 
   const {
     selectedRowsArray, 
@@ -29,7 +30,7 @@ export const Table = ({columns, rows, onRowClick, loading, rowSelector, setLastE
                 <tr data-testid="header-row" className='header-row'>
                    {rowSelector && <th >
                         <Checkbox
-                            value={rows.length && selectedRowsArray?.length === rows.length}
+                            value={rows.length > 0 && selectedRowsArray?.length === rows.length}
                             onChange={() => selectAllRows(rows)}
                             data-testid="column-checkbox"
                         />

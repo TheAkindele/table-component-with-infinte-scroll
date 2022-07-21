@@ -2,7 +2,7 @@ import React from 'react'
 
 interface ICheckbox {
     value: boolean
-    onChange?: () => void
+    onChange: () => void
 }
 
 export const Checkbox = ({value, onChange}: ICheckbox) => {
@@ -12,7 +12,7 @@ export const Checkbox = ({value, onChange}: ICheckbox) => {
         name="table-checkbox" 
         type="checkbox"
         checked={value} 
-        onChange={onChange && onChange} 
+        onChange={onChange} 
         data-testid="checkbox" 
         className='checkbox'
         style={{cursor: "pointer"}}

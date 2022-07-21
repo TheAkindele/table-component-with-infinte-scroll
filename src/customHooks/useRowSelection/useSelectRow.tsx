@@ -6,11 +6,11 @@ import React from 'react'
 //     data?: any
 // }
 
-export function useSelectRow()  {
+export const useSelectRow = <T,C,> () => {
     const [selectedRowsArray, setSelectedRowsArray] = React.useState<any>([])
    //  const [checked, setChecked] = useState<any>([])
 
-    const selectAllRows = React.useCallback((rows: any) => {
+    const selectAllRows = React.useCallback((rows: T[]) => {
         if (selectedRowsArray?.length !== rows?.length) {
             return setSelectedRowsArray(rows)
         } else {
@@ -18,7 +18,7 @@ export function useSelectRow()  {
         }
     }, [selectedRowsArray?.length])
 
-    const selectSingleRow = React.useCallback((rowData: any) => {
+    const selectSingleRow = React.useCallback((rowData: C) => {
         const valueExist = selectedRowsArray?.find((item: unknown) => item === rowData)
         if (valueExist) {
 			const filtered = selectedRowsArray?.filter(
@@ -32,7 +32,7 @@ export function useSelectRow()  {
 	    }
     }, [selectedRowsArray])
 
-    const activateCheckbox = React.useCallback((rowData: any) => {
+    const activateCheckbox = React.useCallback((rowData: C) => {
         const valueExist = selectedRowsArray?.find((item: any) => item === rowData)
         if (valueExist) {
             return true
