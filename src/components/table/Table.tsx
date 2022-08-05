@@ -6,7 +6,7 @@ export interface ITable<T, M> {
     rows: Array<T>
     columns: Array<M>
     // columns: {id: string | number, label: string, width?: string}[]
-    onRowClick: Function
+    onRowClick?: Function
     loading?: boolean
     rowSelector?: boolean;
     setLastElement?: Dispatch<SetStateAction<null>>
@@ -74,7 +74,9 @@ export const Table = <T, M,> ({columns, rows, loading, rowSelector, setLastEleme
                     )}
                     </tr>
                 ))
-                : loading ? (<tr><td>Loading...</td></tr>)
+                : loading ? (<tr>
+                    <td style={{fontSize: "2rem", color: "blue"}}>Loading...</td>
+                </tr>)
                 : (<tr><td>Empty</td></tr> )
                 }
             </tbody>

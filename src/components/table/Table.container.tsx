@@ -62,22 +62,28 @@ export const TableContainer = <T, > (props: Props) => {
 
     
   return (
-    <div>
+    <div style={{padding: "0 1rem 0 1rem", height: "98vh"}}>
+        <div style={{maxHeight: "25vh"}}>
+            <h2>This is a table component with infinite scroll feature </h2>
+            <div>
+                <h4>Table features</h4>
+                <ul>
+                    <li>Infinite scroll ability which mean the more you scroll down the table, the more it keep fetching more table data. Each data fetching returns 30 additional row of data.</li>
+                    <li>Row selection - by clicking the check box of each row, you can select said row</li>
+                    <li>All row secetion - by clicking the header checkbox, you can select every row of the table</li>
+                </ul>
+            </div>
+        </div>
+        <div style={{maxHeight: "74vh", boxSizing: "border-box"}}>
         <Table
             columns={columns}
             rows={photos}
             loading={loading}
-            onRowClick={(row: any) => alert(<Alert row={row} />)}
+            // onRowClick={}
             rowSelector={true}
             setLastElement={setLastElement}
         />
+        </div>
     </div>
   )
 }
-
-const Alert = (row: any) => (
-    <div>
-        <p>{row.title}</p>
-        <p>{row.thumbnailUrl}</p>
-    </div>
-)
